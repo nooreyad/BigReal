@@ -366,10 +366,23 @@ BigReal::BigReal(const BigReal &other) {
     this->num2= other.num2;
 }
 BigReal::BigReal(BigReal &&other) {
-this->num1 = other.num1;
-this->num2 = other.num2;
-other.num1.num="";
-other.num1.Sign=false;
-other.num2.num="";
-other.num1.Sign=false;
+    this->num1 = other.num1;
+    this->num2 = other.num2;
+    other.num1.num="";
+    other.num1.Sign=false;
+    other.num2.num="";
+    other.num1.Sign=false;
+}
+
+BigReal& BigReal:: operator=(BigReal &other) {
+    this->num1= other.num1;
+    this->num2= other.num2;
+}
+BigReal& BigReal::operator=(BigReal &&other) {
+    this->num1= other.num1;
+    this->num2= other.num2;
+    other.num1.num="";
+    other.num1.Sign=false;
+    other.num2.num="";
+    other.num1.Sign=false;
 }
