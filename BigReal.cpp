@@ -320,6 +320,7 @@ ostream& operator << (ostream& out, BigDecimalInt& b){
 }
 
 BigReal::BigReal(double realNumber) {
+    string wholeNumber;
     num2.Sign=false;
     if(realNumber<0){
         realNumber*=-1;
@@ -327,7 +328,6 @@ BigReal::BigReal(double realNumber) {
     }else{
         num1.Sign=false;
     }
-    string wholeNumber;
     wholeNumber= to_string(realNumber);
     int index= wholeNumber.find('.');
     for(int i=0;i<index;i++){
@@ -338,8 +338,7 @@ BigReal::BigReal(double realNumber) {
     }
 }
 BigReal::BigReal(string realNumber) {
-    num2.Sign= false;
-    string part1;
+    string part1,part2;
     int cnt = (count(realNumber.begin(), realNumber.end(), '.'));
     if (cnt > 1) {
         cout << realNumber << endl << "This input doesn't represent a valid format for a real number." << endl;
@@ -352,12 +351,25 @@ BigReal::BigReal(string realNumber) {
         }
         num1 = BigDecimalInt(part1);
         for(int i=index;i< realNumber.size();i++){
-            num2.num.push_back(realNumber[i]);
+            part2.push_back(realNumber[i]);
         }
+        num2 = BigDecimalInt(part2);
     }
 }
 BigReal::BigReal(BigDecimalInt bigInteger) {
     num1 = bigInteger;
     num2.num= "0";
     num2.Sign= false;
+}
+BigReal::BigReal(const BigReal &other) {
+    this->num1=other.num1;
+    this->num2= other.num2;
+}
+BigReal::BigReal(BigReal &&other) {
+this->num1 = other.num1;
+this->num2 = other.num2;
+other.num1.num="";
+other.num1.Sign=false;
+other.num2.num="";
+other.num1.Sign=false;
 }
