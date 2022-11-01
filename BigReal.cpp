@@ -319,4 +319,45 @@ ostream& operator << (ostream& out, BigDecimalInt& b){
     return out;
 }
 
-
+BigReal::BigReal(double realNumber) {
+    num2.Sign=false;
+    if(realNumber<0){
+        realNumber*=-1;
+        num1.Sign=true;
+    }else{
+        num1.Sign=false;
+    }
+    string wholeNumber;
+    wholeNumber= to_string(realNumber);
+    int index= wholeNumber.find('.');
+    for(int i=0;i<index;i++){
+        num1.num.push_back(wholeNumber[i]);
+    }
+    for(int i=index;i<wholeNumber.size();i++){
+        num2.num.push_back(wholeNumber[i]);
+    }
+}
+BigReal::BigReal(string realNumber) {
+    num2.Sign= false;
+    string part1;
+    int cnt = (count(realNumber.begin(), realNumber.end(), '.'));
+    if (cnt > 1) {
+        cout << realNumber << endl << "This input doesn't represent a valid format for a real number." << endl;
+        cout << "Please enter the number with only one decimal point" << endl;
+    }
+    else {
+        int index = realNumber.find('.');
+        for (int i = 0; i < index; i++) {
+            part1.push_back(realNumber[i]);
+        }
+        num1 = BigDecimalInt(part1);
+        for(int i=index;i< realNumber.size();i++){
+            num2.num.push_back(realNumber[i]);
+        }
+    }
+}
+BigReal::BigReal(BigDecimalInt bigInteger) {
+    num1 = bigInteger;
+    num2.num= "0";
+    num2.Sign= false;
+}

@@ -21,10 +21,13 @@ public:
     int size();
     int sign();
     friend ostream& operator << (ostream& out, BigDecimalInt& b);
+    friend class BigReal;
 };
 
 class BigReal {
 private:
+    BigDecimalInt num1;
+    BigDecimalInt num2;
 public:
     BigReal (double realNumber = 0.0); // Default constructor
     BigReal (string realNumber);
