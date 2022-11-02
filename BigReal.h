@@ -26,12 +26,16 @@ public:
 
 class BigReal {
 private:
-    BigDecimalInt num1;
-    BigDecimalInt num2;
+    string * real = new string;
+    BigDecimalInt realNum;
+    int point;
+    bool realSign;
 public:
+    BigReal(){}
     BigReal (double realNumber = 0.0); // Default constructor
     BigReal (string realNumber);
     BigReal (BigDecimalInt bigInteger);
+    ~BigReal();
     BigReal (const BigReal& other); // Copy constructor
     BigReal (BigReal&& other); // Move constructor
     BigReal& operator= (BigReal& other); // Assignment operator
@@ -43,8 +47,8 @@ public:
     bool operator== (BigReal anotherReal);
     int size();
     int sign();
-    friend ostream& operator << (ostream& out, BigReal num);
-    friend istream& operator >> (istream& out, BigReal num);
+    friend ostream& operator << (ostream& out, BigReal& num);
+    friend istream& operator >> (istream& out, BigReal& num);
 };
 
 

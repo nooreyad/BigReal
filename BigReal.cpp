@@ -320,69 +320,74 @@ ostream& operator << (ostream& out, BigDecimalInt& b){
 }
 
 BigReal::BigReal(double realNumber) {
-    string wholeNumber;
-    num2.Sign=false;
+    *real = to_string(realNumber);
     if(realNumber<0){
         realNumber*=-1;
-        num1.Sign=true;
+        realSign=true;
     }else{
-        num1.Sign=false;
+        realSign=false;
     }
-    wholeNumber= to_string(realNumber);
-    int index= wholeNumber.find('.');
-    for(int i=0;i<index;i++){
-        num1.num.push_back(wholeNumber[i]);
-    }
-    for(int i=index;i<wholeNumber.size();i++){
-        num2.num.push_back(wholeNumber[i]);
+    for (int i = 0; i <(*real).size() ; ++i) {  // 100.45
+        if ((*real)[i] == '.') {
+            (*real).erase(i, 1);
+            point = i;
+        }
     }
 }
+
 BigReal::BigReal(string realNumber) {
-    string part1,part2;
     int cnt = (count(realNumber.begin(), realNumber.end(), '.'));
     if (cnt > 1) {
         cout << realNumber << endl << "This input doesn't represent a valid format for a real number." << endl;
         cout << "Please enter the number with only one decimal point" << endl;
     }
     else {
-        int index = realNumber.find('.');
-        for (int i = 0; i < index; i++) {
-            part1.push_back(realNumber[i]);
+        *real = realNumber;
+        for (int i = 0; i < realNumber.size(); ++i) {
+            if (realNumber[i] == '.') {
+                (*real).erase(i, 1);
+                point = i;
+            }
         }
-        num1 = BigDecimalInt(part1);
-        for(int i=index;i< realNumber.size();i++){
-            part2.push_back(realNumber[i]);
-        }
-        num2 = BigDecimalInt(part2);
     }
 }
+
 BigReal::BigReal(BigDecimalInt bigInteger) {
-    num1 = bigInteger;
-    num2.num= "0";
-    num2.Sign= false;
+    *real = bigInteger.num;
+    realSign = bigInteger.Sign;
+    point = bigInteger.num.size();
+    cout << *real << endl;
 }
-BigReal::BigReal(const BigReal &other) {
-    this->num1=other.num1;
-    this->num2= other.num2;
+
+BigReal::BigReal(const BigReal &other){
+    *(this->real) = *other.real;
+    cout << "copy constructor" << endl;
 }
+
 BigReal::BigReal(BigReal &&other) {
-    this->num1 = other.num1;
-    this->num2 = other.num2;
-    other.num1.num="";
-    other.num1.Sign=false;
-    other.num2.num="";
-    other.num1.Sign=false;
+
 }
 
 BigReal& BigReal:: operator=(BigReal &other) {
-    this->num1= other.num1;
-    this->num2= other.num2;
+
 }
 BigReal& BigReal::operator=(BigReal &&other) {
-    this->num1= other.num1;
-    this->num2= other.num2;
-    other.num1.num="";
-    other.num1.Sign=false;
-    other.num2.num="";
-    other.num1.Sign=false;
+
+}
+BigReal::~BigReal() {
+    delete real;
+}
+
+ostream& operator << (ostream& out, BigReal& num){
+/*    out << num.point << endl;
+    if(num.realSign){
+        out << '-';
+    }
+    for (int i = 0; i < num.point; ++i) {
+        out << num.real;
+    }
+    out << '.';
+    for (int i = num.point; i < num.real->size(); ++i) {
+        out << num.real[i];
+    }*/
 }
