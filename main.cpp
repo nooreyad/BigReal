@@ -33,8 +33,22 @@ int main(){
 //    }
 //    str2 = str3;
 //    cout << str2 << "   " << str3;
-BigDecimalInt trial = 3872;
-BigReal num (1.1);
-BigReal num2{num};
-BigReal num3{trial};
+//BigDecimalInt trial = 3872;
+//BigReal num (1.1);
+//BigReal num2{num};
+//BigReal num3{trial};
+BigReal num4(111.812348);
+BigReal num5(111.812349);
+
+if(num4 < num5){
+    cout << "yes" << endl;
+} else {
+    cout << "no";
+}//cout << num4.size() << endl << num5.size();
+
+BigReal num;
+cin >> num;
+cout << num << endl;
+//cout << num5;
+
 }

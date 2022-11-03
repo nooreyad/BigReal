@@ -318,6 +318,12 @@ ostream& operator << (ostream& out, BigDecimalInt& b){
     }
     return out;
 }
+// ---------------------------------------------------------------------------------------------------------------
+// ---------------------------------------- BigReal Implementation -----------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------
+
+
+// ---------------------------------------- Nour Mohamed - 20210428 -----------------------------------------------
 
 BigReal::BigReal(double realNumber) {
     if(realNumber < 0){
@@ -351,11 +357,14 @@ BigReal::BigReal(string realNumber){
     }
     else {
         if(realNumber[0] == '-'){
+            realNumber.erase(0,1);
             realSign = true;
+        } else if(realNumber[0] == '+'){
+            realNumber.erase(0,1);
+            realSign = false;
         } else {
             realSign = false;
         }
-        realNumber.erase(0,1);
         *real = realNumber;
         for (int i = 0; i < realNumber.size(); ++i) {
             if (realNumber[i] == '.') {
@@ -372,6 +381,7 @@ BigReal::BigReal(string realNumber){
         }
     }
 }
+
 BigReal::BigReal(BigDecimalInt bigInteger) {
     (*real) = bigInteger.num;
     for (int i = 0; i <5 ; ++i) {
@@ -423,16 +433,73 @@ BigReal BigReal::operator-(BigReal &other) {
 
 // ---------------------------------------- Merna Islam - 20210500 -----------------------------------------------
 
-bool BigReal::operator<(BigReal anotherReal) {
-
+bool BigReal::operator<(BigReal &anotherReal) {
+    if(this->operator==(anotherReal)){
+        return false;
+    }
+    if(this->realSign && !anotherReal.realSign){                              // -ve      +ve
+        return true;
+    } else if(!this->realSign && anotherReal.realSign){                       // +ve      -ve
+        return false;
+    } else if(this->point < anotherReal.point && !this->realSign){            // 1.1        10.1
+        return true;
+    } else if(this->point < anotherReal.point && this->realSign){             // -1.1      -10.1
+        return false;
+    }else if(this->point > anotherReal.point && !this->realSign){             // 10.1       1.1
+        return false;
+    } else if(this->point > anotherReal.point && this->realSign){             // -10.1     -1.1
+        return true;
+    } else if(this->size() > anotherReal.size() && !this->realSign){          // 10.99      10.9
+        return false;
+    } else if(this->size() > anotherReal.size() && this->realSign){           // -10.99    -10.9
+        return true;
+    } else if(this->size() < anotherReal.size() && !this->realSign){          // 10.9       10.99
+        return true;
+    } else if(this->size() < anotherReal.size() && this->realSign){           // -10.9     -10.99
+        return false;
+    } else if(!this->realSign){
+        for (int i = 0; i < this->size(); ++i) {
+            if (this->real[i] < anotherReal.real[i]) {
+                return true;
+            } else if (this->real[i] > anotherReal.real[i]) {
+                return false;
+            }
+        }
+    } else {
+        for (int i = 0; i < this->size(); ++i) {
+            if (this->real[i] > anotherReal.real[i]) {
+                return true;
+            } else if (this->real[i] < anotherReal.real[i]) {
+                return false;
+            }
+        }
+    }
 }
 
-bool BigReal::operator>(BigReal anotherReal) {
-
+bool BigReal::operator>(BigReal &anotherReal) {
+    bool result = this->operator<(anotherReal);
+    if(result){
+        return false;
+    } else {
+        return true;
+    }
 }
 
-bool BigReal::operator==(BigReal anotherReal) {
-
+bool BigReal::operator==(BigReal &anotherReal) {
+    if(this->point != anotherReal.point){
+        return false;
+    } else if(this->realSign != anotherReal.realSign){
+        return false;
+    } else if(this->size() != anotherReal.size()){
+        return false;
+    } else {
+        for (int i = 0; i < this->size(); ++i) {
+            if (this->real[i] != anotherReal.real[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 int BigReal::size() {
@@ -469,4 +536,11 @@ ostream& operator << (ostream& out, BigReal& num){
     temp2.insert(num.point, temp);
     out << temp2 << endl;
     return out;
+}
+
+istream& operator >> (istream& in, BigReal& num) {  // in >> num
+    string temp;
+    in >> temp;
+    num = BigReal (temp);
+    return in;
 }
