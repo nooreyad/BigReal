@@ -320,13 +320,13 @@ ostream& operator << (ostream& out, BigDecimalInt& b){
 }
 
 BigReal::BigReal(double realNumber) {
-    *real = to_string(realNumber);
     if(realNumber<0){
         realNumber*=-1;
         realSign=true;
     }else{
         realSign=false;
     }
+    *real = to_string(realNumber);
     for (int i = 0; i <(*real).size() ; ++i) {  // 100.45
         if ((*real)[i] == '.') {
             (*real).erase(i, 1);
@@ -335,14 +335,14 @@ BigReal::BigReal(double realNumber) {
     }
 }
 
-BigReal::BigReal(string realNumber) {
+BigReal::BigReal(string realNumber){
     int cnt = (count(realNumber.begin(), realNumber.end(), '.'));
     if (cnt > 1) {
         cout << realNumber << endl << "This input doesn't represent a valid format for a real number." << endl;
         cout << "Please enter the number with only one decimal point" << endl;
     }
     else {
-        *real = realNumber;
+        (*real) = realNumber;
         for (int i = 0; i < realNumber.size(); ++i) {
             if (realNumber[i] == '.') {
                 (*real).erase(i, 1);
@@ -350,44 +350,78 @@ BigReal::BigReal(string realNumber) {
             }
         }
     }
+    cout<<*real<<endl;
 }
 
 BigReal::BigReal(BigDecimalInt bigInteger) {
-    *real = bigInteger.num;
+    (*real) = bigInteger.num;
+    for (int i = 0; i <5 ; ++i) {
+        (*real).push_back('0');
+    }
     realSign = bigInteger.Sign;
     point = bigInteger.num.size();
-    cout << *real << endl;
 }
 
-BigReal::BigReal(const BigReal &other){
-    *(this->real) = *other.real;
-    cout << "copy constructor" << endl;
+BigReal::BigReal(const BigReal &other) : BigReal(*other.real){
+    cout<<"Copy constructor is called"<<endl;
 }
 
 BigReal::BigReal(BigReal &&other) {
-
-}
-
-BigReal& BigReal:: operator=(BigReal &other) {
-
-}
-BigReal& BigReal::operator=(BigReal &&other) {
-
+    *real = *other.real;
+    point = other.point;
+    realSign = other.realSign;
+    other.real = nullptr;
+    other.point = 0;
+    realSign = false;
 }
 BigReal::~BigReal() {
     delete real;
 }
 
+BigReal& BigReal:: operator=(BigReal &other) {
+    *(this->real) = *other.real;
+    point = other.point;
+    realSign = other.realSign;
+}
+BigReal& BigReal::operator=(BigReal &&other) {
+    *(this->real) = *other.real;
+    point = other.point;
+    realSign = other.realSign;
+    other.real= nullptr;
+    other.point = 0;
+    realSign = false;
+}
+
+BigReal BigReal::operator+(BigReal &other) {}
+
+BigReal BigReal::operator-(BigReal &other) {}
+
+bool BigReal::operator<(BigReal anotherReal) {}
+
+bool BigReal::operator>(BigReal anotherReal) {}
+
+bool BigReal::operator==(BigReal anotherReal) {}
+
+int BigReal::size() {}
+
+int BigReal::sign() {
+    if(realSign){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
 ostream& operator << (ostream& out, BigReal& num){
-/*    out << num.point << endl;
     if(num.realSign){
-        out << '-';
+        out<<"-";
     }
     for (int i = 0; i < num.point; ++i) {
-        out << num.real;
+        out<<(*num.real)[i];
     }
-    out << '.';
-    for (int i = num.point; i < num.real->size(); ++i) {
-        out << num.real[i];
-    }*/
+    out<<".";
+    for (int i = num.point; i <(*num.real).size() ; ++i) {
+        out<<(*num.real)[i];
+    }
 }
