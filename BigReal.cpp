@@ -320,17 +320,25 @@ ostream& operator << (ostream& out, BigDecimalInt& b){
 }
 
 BigReal::BigReal(double realNumber) {
-    if(realNumber<0){
+    if(realNumber < 0){
         realNumber *= -1;
+        *real = to_string(realNumber);
         realSign = true;
     }else{
+        *real = to_string(realNumber);
         realSign = false;
     }
-    *real = to_string(realNumber);
-    for (int i = 0; i <(*real).size() ; ++i) {  // 100.45
+    for (int i = 0; i < (*real).size() ; ++i) {  // 100.45
         if ((*real)[i] == '.') {
             (*real).erase(i, 1);
             point = i;
+        }
+    }
+    for (int i = (*real).size()-1; i >= point; --i) {
+        if((*real)[i] == '0'){
+            (*real).erase(i,1);
+        } else {
+            break;
         }
     }
 }
@@ -342,17 +350,28 @@ BigReal::BigReal(string realNumber){
         cout << "Please enter the number with only one decimal point" << endl;
     }
     else {
-        (*real) = realNumber;
+        if(realNumber[0] == '-'){
+            realSign = true;
+        } else {
+            realSign = false;
+        }
+        realNumber.erase(0,1);
+        *real = realNumber;
         for (int i = 0; i < realNumber.size(); ++i) {
             if (realNumber[i] == '.') {
                 (*real).erase(i, 1);
                 point = i;
             }
         }
+        for (int i = (*real).size()-1; i >= point; --i) {
+            if((*real)[i] == '0'){
+                (*real).erase(i,1);
+            } else {
+                break;
+            }
+        }
     }
-    cout<<*real<<endl;
 }
-
 BigReal::BigReal(BigDecimalInt bigInteger) {
     (*real) = bigInteger.num;
     for (int i = 0; i <5 ; ++i) {
@@ -392,17 +411,45 @@ BigReal& BigReal::operator=(BigReal &&other) {
     realSign = false;
 }
 
-BigReal BigReal::operator+(BigReal &other) {}
+// ---------------------------------------- Noor Eyad - 20210499 -----------------------------------------------
 
-BigReal BigReal::operator-(BigReal &other) {}
+BigReal BigReal::operator+(BigReal &other) {
 
-bool BigReal::operator<(BigReal anotherReal) {}
+}
 
-bool BigReal::operator>(BigReal anotherReal) {}
+BigReal BigReal::operator-(BigReal &other) {
 
-bool BigReal::operator==(BigReal anotherReal) {}
+}
 
-int BigReal::size() {}
+// ---------------------------------------- Merna Islam - 20210500 -----------------------------------------------
+
+bool BigReal::operator<(BigReal anotherReal) {
+
+}
+
+bool BigReal::operator>(BigReal anotherReal) {
+
+}
+
+bool BigReal::operator==(BigReal anotherReal) {
+
+}
+
+int BigReal::size() {
+    int count = 0;
+    for (auto item: *real) {
+        count++;
+    }
+    for (int i = count-1; i >= point; --i) {
+        if((*real)[i] == '0'){
+            (*real).erase(i,1);
+            count--;
+        } else {
+            break;
+        }
+    }
+    return count;
+}
 
 int BigReal::sign() {
     if(realSign){
@@ -415,13 +462,11 @@ int BigReal::sign() {
 
 ostream& operator << (ostream& out, BigReal& num){
     if(num.realSign){
-        out<<"-";
+        out << '-';
     }
-    for (int i = 0; i < num.point; ++i) {
-        out<<(*num.real)[i];
-    }
-    out<<".";
-    for (int i = num.point; i <(*num.real).size() ; ++i) {
-        out<<(*num.real)[i];
-    }
+    string temp = ".";
+    string temp2 = *(num.real);
+    temp2.insert(num.point, temp);
+    out << temp2 << endl;
+    return out;
 }

@@ -33,19 +33,8 @@ int main(){
 //    }
 //    str2 = str3;
 //    cout << str2 << "   " << str3;
-
-
-//BigDecimalInt trial = 3872;
-//BigReal num (1.1);
-//BigReal num2{num};
-//BigReal num3{trial};
-
-BigReal realDouble(1352.889666);
-BigReal realString("28248282.622882828");
-BigReal realCopy(realString);
-BigReal decimalNum (BigDecimalInt("7246822882"));
-cout<<realDouble<<endl;
-cout<<decimalNum<<endl;
-cout<<realString<<endl;
-BigReal wrongNumber("1.4.5.673288");
+BigDecimalInt trial = 3872;
+BigReal num (1.1);
+BigReal num2{num};
+BigReal num3{trial};
 }
