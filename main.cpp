@@ -37,18 +37,20 @@ int main(){
 //BigReal num (1.1);
 //BigReal num2{num};
 //BigReal num3{trial};
-BigReal num4(111.812348);
-BigReal num5(111.812349);
+BigReal num4(11.812349);
+BigReal num5("1.1");
 
-if(num4 < num5){
+cout << num4 << num5;
+if(num4 == num5){
     cout << "yes" << endl;
 } else {
     cout << "no";
-}//cout << num4.size() << endl << num5.size();
+}
+// cout << num4.size() << endl << num5.size();
 
-BigReal num;
-cin >> num;
-cout << num << endl;
+//BigReal num;
+//cin >> num;
+//cout << num << endl;
 //cout << num5;
 
 }

@@ -486,34 +486,18 @@ bool BigReal::operator>(BigReal &anotherReal) {
 }
 
 bool BigReal::operator==(BigReal &anotherReal) {
-    if(this->point != anotherReal.point){
+    if(this->point != anotherReal.point || this->realSign != anotherReal.realSign || this->size() != anotherReal.size()){
         return false;
-    } else if(this->realSign != anotherReal.realSign){
-        return false;
-    } else if(this->size() != anotherReal.size()){
-        return false;
-    } else {
-        for (int i = 0; i < this->size(); ++i) {
-            if (this->real[i] != anotherReal.real[i]) {
-                return false;
-            }
-        }
-        return true;
+    } else if(*(this->real) != *(anotherReal.real)){
+            return false;
     }
+    return true;
 }
 
 int BigReal::size() {
     int count = 0;
     for (auto item: *real) {
         count++;
-    }
-    for (int i = count-1; i >= point; --i) {
-        if((*real)[i] == '0'){
-            (*real).erase(i,1);
-            count--;
-        } else {
-            break;
-        }
     }
     return count;
 }
