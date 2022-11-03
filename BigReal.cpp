@@ -321,10 +321,10 @@ ostream& operator << (ostream& out, BigDecimalInt& b){
 
 BigReal::BigReal(double realNumber) {
     if(realNumber<0){
-        realNumber*=-1;
-        realSign=true;
+        realNumber *= -1;
+        realSign = true;
     }else{
-        realSign=false;
+        realSign = false;
     }
     *real = to_string(realNumber);
     for (int i = 0; i <(*real).size() ; ++i) {  // 100.45

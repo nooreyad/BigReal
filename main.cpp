@@ -40,12 +40,12 @@ int main(){
 //BigReal num2{num};
 //BigReal num3{trial};
 
-BigReal realdouble(1352.889666);
-BigReal realstring("28248282.622882828");
-BigReal realcopy(realstring);
+BigReal realDouble(1352.889666);
+BigReal realString("28248282.622882828");
+BigReal realCopy(realString);
 BigReal decimalNum (BigDecimalInt("7246822882"));
-cout<<realdouble<<endl;
+cout<<realDouble<<endl;
 cout<<decimalNum<<endl;
-cout<<realstring<<endl;
-BigReal numberrr("1.4.5.673288");
+cout<<realString<<endl;
+BigReal wrongNumber("1.4.5.673288");
 }
