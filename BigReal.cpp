@@ -353,7 +353,7 @@ BigReal::BigReal(string realNumber){
     int cnt = (count(realNumber.begin(), realNumber.end(), '.'));
     if (cnt > 1) {
         cout << realNumber << endl << "This input doesn't represent a valid format for a real number." << endl;
-        cout << "Please enter the number with only one decimal point" << endl;
+        cout << "Please, enter the number with only one decimal point." << endl;
     }
     else {
         if(realNumber[0] == '-'){
@@ -384,18 +384,21 @@ BigReal::BigReal(string realNumber){
 
 BigReal::BigReal(BigDecimalInt bigInteger) {
     (*real) = bigInteger.num;
-    for (int i = 0; i <5 ; ++i) {
-        (*real).push_back('0');
-    }
     realSign = bigInteger.Sign;
     point = bigInteger.num.size();
+    realNum.num = bigInteger.num;
+    realNum.Sign = bigInteger.Sign;
 }
 
-BigReal::BigReal(const BigReal &other) : BigReal(*other.real){
-    cout<<"Copy constructor is called"<<endl;
+BigReal::BigReal(const BigReal &other){
+    cout<<"Copy constructor"<<endl;
+    *real = *other.real;
+    point = other.point;
+    realSign = other.realSign;
 }
 
 BigReal::BigReal(BigReal &&other) {
+    cout<<"Move constructor"<<endl;
     *real = *other.real;
     point = other.point;
     realSign = other.realSign;
@@ -407,12 +410,14 @@ BigReal::~BigReal() {
     delete real;
 }
 
-BigReal& BigReal:: operator=(BigReal &other) {
+BigReal& BigReal:: operator=(const BigReal &other) {
+    cout<<"Copy assignment operator"<<endl;
     *(this->real) = *other.real;
     point = other.point;
     realSign = other.realSign;
 }
 BigReal& BigReal::operator=(BigReal &&other) {
+    cout<<"Move assignment operator"<<endl;
     *(this->real) = *other.real;
     point = other.point;
     realSign = other.realSign;

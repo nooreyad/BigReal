@@ -1,4 +1,5 @@
 #include <iostream>
+#include<vector>
 #include "BigReal.h"
 using namespace std;
 
@@ -37,20 +38,36 @@ int main(){
 //BigReal num (1.1);
 //BigReal num2{num};
 //BigReal num3{trial};
-BigReal num4(11.812349);
-BigReal num5("1.1");
-
-cout << num4 << num5;
-if(num4 == num5){
-    cout << "yes" << endl;
-} else {
-    cout << "no";
-}
-// cout << num4.size() << endl << num5.size();
-
+//BigReal num4(111.812348);
+//BigReal num5(111.812349);
+//
+//if(num4 < num5){
+//    cout << "yes" << endl;
+//} else {
+//    cout << "no";
+//}//cout << num4.size() << endl << num5.size();
+//
 //BigReal num;
 //cin >> num;
 //cout << num << endl;
-//cout << num5;
+////cout << num5;
 
+
+BigReal numdecimal(BigDecimalInt("3789320280208803802"));
+cout<<numdecimal<<endl;
+
+
+////TESTING COPY AND MOVE
+//BigReal num1("236186818.9404"), num2("3747474748.77");
+//BigReal num3(num1); // calls copy constructor
+//BigReal num4 = num2; //calls copy constructor // same as num4(num2)
+//cout<<num4<<endl;
+//BigReal num5("637377383.88"), num6(8389384894.88);
+//num5 = num6; //calls assignment operator  //same as num5.operator=(num6)
+//cout<<num5<<endl;
+//vector<BigReal>vec;
+//vec.push_back(BigReal("12792079.88")); //inserting rvalue of type BigReal in vec
+//cout<<vec[0]<<endl;
+//vec[1]=BigReal("945303030.55"); //Calls the move assignment
+//cout<<vec[1]<<endl; //It doesn't print
 }
