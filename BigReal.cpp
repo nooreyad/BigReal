@@ -465,18 +465,103 @@ BigReal& BigReal::operator=(BigReal &&other) {
     point = other.point;
     realSign = other.realSign;
     other.real= nullptr;
-    other.point = 0;
-    realSign = false;
+    return *this;
 }
 
 // ---------------------------------------- Noor Eyad - 20210499 -----------------------------------------------
 
 BigReal BigReal::operator+(BigReal &other) {
-
+    BigDecimalInt temp;
+    BigDecimalInt num1;
+    BigDecimalInt num2;
+    BigReal result;
+    if(this->size()-this->point < other.size()-other.point){ // 1.23    1.654
+        int diff = (other.size()-other.point) - (this->size()-this->point);
+        for (int i = 0; i < diff; ++i) {
+            *(this->real) += '0';
+        }
+    } else if(this->size()-this->point > other.size()-other.point){  // 1.236    1.65
+        int diff = (this->size()-this->point) - (other.size()-other.point);
+        for (int i = 0; i < diff; ++i) {
+            *(other.real) += '0';
+        }
+    }
+    if(this->point < other.point){      // 1.2   22.2
+        int diff = other.point - this->point;
+        for (int i = 0; i < diff; ++i) {
+            *(this->real) = '0' + *(this->real);
+        }
+    } else if(this->point > other.point){      // 177.2   22.2
+        int diff = this->point - other.point;
+        for (int i = 0; i < diff; ++i) {
+            *(other.real) = '0' + *(other.real);
+        }
+    }
+    num1.number = *(this->real);
+    if(this->realSign)
+        num1.sign = '-';
+    else
+        num1.sign = '+';
+    num2.number = *(other.real);
+    if(other.realSign)
+        num2.sign = '-';
+    else
+        num2.sign = '+';
+    temp = num1.operator+(num2);
+    *(result.real) = temp.number;
+    if(temp.Sign() == 0)
+        result.realSign = true;
+    else
+        result.realSign = false;
+    result.point = other.point;
+    return result;
 }
 
 BigReal BigReal::operator-(BigReal &other) {
-
+    BigDecimalInt temp;
+    BigDecimalInt num1;
+    BigDecimalInt num2;
+    BigReal result;
+    if(this->size()-this->point < other.size()-other.point){ // 1.23    1.654
+        int diff = (other.size()-other.point) - (this->size()-this->point);
+        for (int i = 0; i < diff; ++i) {
+            *(this->real) += '0';
+        }
+    } else if(this->size()-this->point > other.size()-other.point){  // 1.236    1.65
+        int diff = (this->size()-this->point) - (other.size()-other.point);
+        for (int i = 0; i < diff; ++i) {
+            *(other.real) += '0';
+        }
+    }
+    if(this->point < other.point){      // 1.2   22.2
+        int diff = other.point - this->point;
+        for (int i = 0; i < diff; ++i) {
+            *(this->real) = '0' + *(this->real);
+        }
+    } else if(this->point > other.point){      // 177.2   22.2
+        int diff = this->point - other.point;
+        for (int i = 0; i < diff; ++i) {
+            *(other.real) = '0' + *(other.real);
+        }
+    }
+    num1.number = *(this->real);
+    if(this->realSign)
+        num1.sign = '-';
+    else
+        num1.sign = '+';
+    num2.number = *(other.real);
+    if(other.realSign)
+        num2.sign = '-';
+    else
+        num2.sign = '+';
+    temp = num1.operator-(num2);
+    *(result.real) = temp.number;
+    if(temp.Sign() == 0)
+        result.realSign = true;
+    else
+        result.realSign = false;
+    result.point = other.point;
+    return result;
 }
 
 // ---------------------------------------- Merna Islam - 20210500 -----------------------------------------------

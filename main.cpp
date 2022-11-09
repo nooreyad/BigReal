@@ -4,11 +4,18 @@
 using namespace std;
 
 int main(){
+    BigReal num1 = {"5.23"};
+    BigReal num2 = {"1.8"};
+    BigReal num3;
+    num3 = num1 - num2;
+    cout << num3;
 //    BigDecimalInt str1 = {"-87"};
 //    BigDecimalInt str2 = {"-1878764"};
 //    BigDecimalInt str3 = {"-871726381"};
-//    BigDecimalInt str4 = {"+78162836872387"};
+//    BigDecimalInt str4 = {"978162836872387"};
 //    BigDecimalInt str5 = {"127836182612387"};
+//    if(str4 > str5)
+//        cout << "yy";
 //    BigDecimalInt str6 = {-871726381};
 //    BigDecimalInt str7 = {-12387};
 //    BigDecimalInt sum = str1 + str2;
@@ -53,8 +60,8 @@ int main(){
 ////cout << num5;
 
 
-BigReal numdecimal(BigDecimalInt("3789320280208803802"));
-cout<<numdecimal<<endl;
+//BigReal numdecimal(BigDecimalInt("3789320280208803802"));
+//cout<<numdecimal<<endl;
 
 
 ////TESTING COPY AND MOVE
@@ -70,4 +77,6 @@ cout<<numdecimal<<endl;
 //cout<<vec[0]<<endl;
 //vec[1]=BigReal("945303030.55"); //Calls the move assignment
 //cout<<vec[1]<<endl; //It doesn't print
+
+
 }

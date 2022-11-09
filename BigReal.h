@@ -60,5 +60,6 @@ public:
     friend istream& operator >> (istream& in, BigReal& num);
 };
 
+BigDecimalInt& arrange(BigReal& first, BigReal& second);
 
 #endif //GROUPTASK1_ASSIGNMENT2_BIGREAL_H
