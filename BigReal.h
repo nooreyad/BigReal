@@ -3,26 +3,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class BigDecimalInt {
+class BigDecimalInt{
 private:
-    string num;
-    bool Sign;
+    string number;
+    char sign;
+    void setNumber(string num);
+    bool checkValidInput(string input);
+
 public:
-    BigDecimalInt();
-    BigDecimalInt(string decStr);
-    BigDecimalInt(int decInt);
-    BigDecimalInt operator+(BigDecimalInt &anotherDec);
-    BigDecimalInt summation(BigDecimalInt &anotherDec);
-    BigDecimalInt operator- (BigDecimalInt anotherDec);
-    bool operator< (BigDecimalInt anotherDec);
-    bool operator> (BigDecimalInt anotherDec);
-    bool operator==(BigDecimalInt &anotherDec);
-    BigDecimalInt& operator= (const BigDecimalInt& anotherDec);
+    bool operator < (const BigDecimalInt& anotherDec);
+    bool operator > (const BigDecimalInt& anotherDec);
+    bool operator == (const BigDecimalInt anotherDec);
+    BigDecimalInt& operator = (BigDecimalInt anotherDec);
+    BigDecimalInt operator + (BigDecimalInt number2);
+    BigDecimalInt operator - (BigDecimalInt anotherDec);
+    friend ostream &operator << (ostream &out, BigDecimalInt num);
     int size();
-    int sign();
-    friend ostream& operator << (ostream& out, BigDecimalInt& b);
+    int Sign();
+    void push_back(char ch);
+    void push_front(char ch);
+    BigDecimalInt(){}
+    BigDecimalInt(string num)
+    {
+        setNumber(num);
+    }
+    string getnum(){
+        return number;
+    }
     friend class BigReal;
 };
+
 
 class BigReal {
 private:
