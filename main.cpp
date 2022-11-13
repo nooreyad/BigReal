@@ -4,8 +4,8 @@
 using namespace std;
 
 int main(){
-    BigReal num1 = {"5.23"};
-    BigReal num2 = {"1.8"};
+    BigReal num1 = {"11879.7"};
+    BigReal num2 = {"12312.2"};
     BigReal num3;
     num3 = num1 - num2;
     cout << num3;
