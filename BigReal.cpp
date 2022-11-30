@@ -442,7 +442,7 @@ BigReal::BigReal(const BigReal &other){
 
 BigReal::BigReal(BigReal &&other) {
     cout<<"Move constructor"<<endl;
-    *real = *other.real;
+    real = other.real;
     point = other.point;
     realSign = other.realSign;
     other.real = nullptr;
@@ -463,7 +463,7 @@ BigReal& BigReal:: operator=(const BigReal &other) {
 
 BigReal& BigReal::operator=(BigReal &&other) {
     cout<<"Move assignment operator"<<endl;
-    *(this->real) = *other.real;
+    this->real = other.real;
     point = other.point;
     realSign = other.realSign;
     other.real= nullptr;
@@ -488,24 +488,20 @@ BigReal BigReal::operator+(BigReal &other) {
             *(other.real) += '0';
         }
     }
-    int tempPoint = 0;
     if(this->point < other.point){      // 1.2   22.2
-        tempPoint = this->point;
         int diff = other.point - this->point;
         for (int i = 0; i < diff; ++i) {
             *(this->real) = '0' + *(this->real);
-            tempPoint++;
         }
+        this->point = other.point;
     } else if(this->point > other.point){      // 177.2   22.2
-        tempPoint = other.point;
         int diff = this->point - other.point;
         for (int i = 0; i < diff; ++i) {
             *(other.real) = '0' + *(other.real);
-            tempPoint++;
         }
-    } else {
-        tempPoint = this->point;
+        other.point = this->point;
     }
+//    int tempPoint = this->size() - (this->size()-this->point);
     num1.number = *(this->real);
     if(this->realSign)
         num1.sign = '-';
@@ -522,7 +518,17 @@ BigReal BigReal::operator+(BigReal &other) {
         result.realSign = true;
     else
         result.realSign = false;
-    result.point = tempPoint;
+    if(this->size() < result.size()){
+        result.point = this->point + 1;
+    } else if(this->size() > result.size()){
+        result.point = this->point - 1;
+    } else {
+        result.point = this->point;
+    }
+    if(result.point == 0){
+        result.point = 1;
+        *(result.real) = '0' + *(result.real);
+    }
     return result;
 }
 
@@ -531,9 +537,6 @@ BigReal BigReal::operator-(BigReal &other) {
     BigDecimalInt num1;
     BigDecimalInt num2;
     BigReal result;
-    bool isZero = true;
-    bool borrow = false;
-    string temp1Before, temp2Before, temp1After, temp2After;
     if(this->size()-this->point < other.size()-other.point){ // 1.23    1.654
         int diff = (other.size()-other.point) - (this->size()-this->point);
         for (int i = 0; i < diff; ++i) {
@@ -545,37 +548,16 @@ BigReal BigReal::operator-(BigReal &other) {
             *(other.real) += '0';
         }
     }
-    int tempPoint;
     if(this->point < other.point){      // 1.2   22.2
-        tempPoint = this->point;
         int diff = other.point - this->point;
         for (int i = 0; i < diff; ++i) {
             *(this->real) = '0' + *(this->real);
-            tempPoint++;
         }
     } else if(this->point > other.point){      // 177.2   22.2
-        tempPoint = other.point;
         int diff = this->point - other.point;
         for (int i = 0; i < diff; ++i) {
             *(other.real) = '0' + *(other.real);
-            tempPoint++;
         }
-    } else {
-        tempPoint = this->point;
-    }
-    for (int i = 0; i < this->point; ++i) {
-        if((*real)[i] != '0'){
-            isZero = false;
-            break;
-        }
-    }
-    temp1Before = (*real).substr(0,this->point);
-    temp1After = (*real).substr(this->point);
-    temp2Before = (*other.real).substr(0,other.point);
-    temp2After = (*other.real).substr(other.point);
-    if((temp1Before < temp2Before || temp1After < temp2After || temp1Before == temp2Before) && temp1Before != "0" && this->point != 0 && other.point != 0){
-        cout << "borroooowww" << endl;
-        borrow = true;
     }
     num1.number = *(this->real);
     if(this->realSign)
@@ -593,27 +575,16 @@ BigReal BigReal::operator-(BigReal &other) {
         result.realSign = true;
     else
         result.realSign = false;
-    result.point = tempPoint;
-    if(this->point == 0 || other.point == 0){
-        isZero = false;
-        cout << "inside the point 0 if conditional " << endl;
-        *(result.real) = '0' + *(result.real);
+    if(this->size() < result.size()){
+        result.point = this->point + 1;
+    } else if(this->size() > result.size()){
+        result.point = this->point - 1;
+    } else {
+        result.point = this->point;
+    }
+    if(result.point == 0){
         result.point = 1;
-    }
-    if(isZero){
-        cout << " iszero " << endl;
         *(result.real) = '0' + *(result.real);
-    }
-    if(borrow){
-        cout << " borrow " << endl;
-        if(other.point == 1){
-            *(result.real) = '0' + *(result.real);
-        } else if(temp1Before == temp2Before){
-            *(result.real) = '0' + *(result.real);
-            result.point--;
-        } else {
-            result.point--;
-        }
     }
     return result;
 }
